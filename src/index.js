@@ -31,8 +31,8 @@ const App = () => {
         <SiteHeader />
         <MoviesContextProvider>
           <Routes>
-            <Route path="/movies/:id/recommended" element={<MovieRecommendationsPage />} />
-            <Route path="/movies/popular" element={<PopularMoviesPage />} />
+          <Route path="/movies/:id/recommended" element={<MovieRecommendationsPage />} />
+          <Route path="/movies/popular" element={<PopularMoviesPage />} />
             <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
             <Route path="/reviews/form" element={<AddMovieReviewPage />} />
             <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />

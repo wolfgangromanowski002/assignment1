@@ -122,8 +122,7 @@ export const getMovies = () => {
     const [, { id }] = queryKey;
     return fetch(
       `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=1`
-    )
-      .then((response) => {
+    ).then((response) => {
         if (!response.ok) {
           return response.json().then((error) => {
             throw new Error(error.status_message || "Failed to fetch recommendations.");
@@ -136,4 +135,22 @@ export const getMovies = () => {
         throw error;
       });
   };
+
+
+  export const getMovieCredits = (id) => {
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}`)
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw new Error(error.status_message || "Failed to fetch credits.");
+          });
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+  
   

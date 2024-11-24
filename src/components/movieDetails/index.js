@@ -9,6 +9,8 @@ import Fab from "@mui/material/Fab";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews";
+import { getMovieCredits } from "../../api/tmdb-api";
+import { useQuery } from 'react-query';
 
 const root = {
     display: "flex",
@@ -20,11 +22,17 @@ const root = {
 };
 const chip = { margin: 0.5 };
 
-const MovieDetails = ({ movie }) => {  // Don't miss this!
+const MovieDetails = ({ movie}) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { data: credits, isLoading, isError, error } = useQuery({
+queryKey: ["credit Details", { id: movie.id }],
+queryFn: () => getMovieCredits(movie.id),});
 
+  const cast = credits?.cast || [];
+  const crew = credits?.crew || [];
+  
   return (
-    <>
+<>
       <Typography variant="h5" component="h3">
         Overview
       </Typography>
@@ -40,11 +48,12 @@ const MovieDetails = ({ movie }) => {  // Don't miss this!
         <li>
           <Chip label="Genres" sx={{...chip}} color="primary" />
         </li>
-        {movie.genres.map((g) => (
+        {movie.genres?.length > 0 ? (
+        movie.genres.map((g) => (
           <li key={g.name}>
             <Chip label={g.name} sx={{...chip}} />
           </li>
-        ))}
+        ))) : null}
       </Paper>
       <Paper component="ul" sx={{...root}}>
         <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
@@ -58,6 +67,31 @@ const MovieDetails = ({ movie }) => {  // Don't miss this!
         />
         <Chip label={`Released: ${movie.release_date}`} />
       </Paper>
+
+      <Typography variant="h5" component="h3">
+        Cast
+      </Typography>
+      <Paper component="ul" sx={{ ...root }}>
+        {cast.map((actor) => (
+          <Chip
+            key={actor.id || `${actor.name}-${actor.character}`}
+            label={`${actor.name} as ${actor.character}`}
+            sx={{ ...chip }}
+          />
+        ))}
+      </Paper>
+
+      <Typography variant="h5" component="h3">
+        Crew
+      </Typography>
+      <Paper component="ul" sx={{ ...root }}>
+        {crew.map((member) => (
+          <Chip
+            key={member.id || `${member.name}-${member.job}`}
+            label={`${member.name} - ${member.job}`}
+            sx={{ ...chip }}/>
+        ))}</Paper>
+
       <Fab
         color="secondary"
         variant="extended"
