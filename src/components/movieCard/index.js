@@ -10,40 +10,57 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid"; // Corrected import
+import Grid from "@mui/material/Grid";
 import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router-dom";
 import { MoviesContext } from "../../contexts/movieContext";
+import IconButton from "@mui/material/IconButton";
+import RecommendIcon from "@mui/icons-material/Recommend";
+import Tooltip from "@mui/material/Tooltip";
+import { useNavigate } from "react-router-dom";
 
 export default function MovieCard({ movie, action }) {
   const { favorites } = useContext(MoviesContext);
-  const isFavorite = favorites.some((m) => m.id === movie.id); // Check if movie is in favorites
+
+  const navigate = useNavigate();
+
+  const navigateToRecommendations = (movieId) => {
+    navigate(`/movies/${movieId}/recommended`);
+  };
+
+  const isFavorite = favorites.some((m) => m.id === movie.id);
 
   return (
     <Card>
       <CardHeader
         avatar={
-          isFavorite ? (
-            <Avatar sx={{ backgroundColor: "red" }}>
-              <FavoriteIcon />
-            </Avatar>
-          ) : null
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {isFavorite ? (
+              <Avatar sx={{ backgroundColor: "red" }}>
+                <FavoriteIcon />
+              </Avatar>
+            ) : null}
+            <Tooltip title="View Recommendations">
+              <IconButton
+                aria-label="view recommendations"
+                onClick={() => navigateToRecommendations(movie.id)}
+              >
+                <RecommendIcon sx={{ color: "blue" }} />
+              </IconButton>
+            </Tooltip>
+          </div>
         }
         title={
           <Typography variant="h5" component="p" noWrap>
             {movie.title}
-          </Typography>
-        }
-      />
+          </Typography>}/>
       <CardMedia
         sx={{ height: 500 }}
         image={
           movie.poster_path
             ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-            : img
-        }
-        alt={`${movie.title} poster`}
-      />
+            : img}
+        alt={`${movie.title} poster`}/>
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={6}>
@@ -67,5 +84,4 @@ export default function MovieCard({ movie, action }) {
         </Link>
       </CardActions>
     </Card>
-  );
-}
+  );}

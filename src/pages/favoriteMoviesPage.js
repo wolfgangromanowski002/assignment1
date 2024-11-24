@@ -8,21 +8,15 @@ const FavoriteMoviesPage = () => {
   const { favorites } = useContext(MoviesContext);
 
   if (favorites.length === 0) {
-    return <h1>No favorite movies added yet!</h1>;
-  }
+    return <h1>No favorite movies added yet!</h1>;}
 
   return (
     <PageTemplate
       title="Favorite Movies"
       movies={favorites}
       action={(movie) => (
-        <>
-          <RemoveFromFavorites movie={movie} />
-          <WriteReview movie={movie} />
-        </>
-      )}
-    />
-  );
-};
+        <><RemoveFromFavorites movie={movie}/>
+          <WriteReview movie={movie}/></>
+      )}/>);};
 
 export default FavoriteMoviesPage;
