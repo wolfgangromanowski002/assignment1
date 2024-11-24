@@ -11,6 +11,7 @@ import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews";
 import { getMovieCredits } from "../../api/tmdb-api";
 import { useQuery } from 'react-query';
+import { Link } from "react-router-dom";
 
 const root = {
     display: "flex",
@@ -73,25 +74,31 @@ queryFn: () => getMovieCredits(movie.id),});
       </Typography>
       <Paper component="ul" sx={{ ...root }}>
         {cast.map((actor) => (
-          <Chip
-            key={actor.id || `${actor.name}-${actor.character}`}
-            label={`${actor.name} as ${actor.character}`}
-            sx={{ ...chip }}
-          />
-        ))}
-      </Paper>
+           <li key={actor.id}>
+           <Link to={`/person/${actor.id}`} style={{ textDecoration: "none" }}>     
+           <Chip
+          label={`${actor.name} as ${actor.character}`}
+          sx={{ ...chip }}
+          clickable />
+          </Link>
+        </li>
+      ))}
+    </Paper>
 
       <Typography variant="h5" component="h3">
         Crew
       </Typography>
       <Paper component="ul" sx={{ ...root }}>
         {crew.map((member) => (
-          <Chip
-            key={member.id || `${member.name}-${member.job}`}
-            label={`${member.name} - ${member.job}`}
-            sx={{ ...chip }}/>
-        ))}</Paper>
-
+            <li key={member.id}>
+            <Link to={`/person/${member.id}`} style={{ textDecoration: "none" }}>
+              <Chip
+                label={`${member.name} - ${member.job}`}
+                sx={{ ...chip }}
+                clickable/>
+                </Link>
+                </li>))}
+          </Paper>
       <Fab
         color="secondary"
         variant="extended"
