@@ -47,6 +47,22 @@ export default function FilterMoviesCard(props) {
   const handleGenreChange = (e) => {
     handleChange(e, "genre", e.target.value);
   };
+ 
+  const handleRatingChange = (e) => {
+    const rating = e.target.value ? parseFloat(e.target.value) : 0;
+    props.onUserInput("rating", rating);
+  };
+  
+  
+  const handleYearChange = (e) => {
+    props.onUserInput("year", e.target.value);
+  };
+
+
+  
+  const handleSortChange = (e) => {
+    props.onUserInput("sort", e.target.value);
+  };
   
   return (
     <Card
@@ -69,6 +85,25 @@ export default function FilterMoviesCard(props) {
           value={props.titleFilter}
           onChange={handleTextChange}
         />
+
+        <TextField
+          sx={{ ...formControl }}
+          label="Minimum Rating"
+          type="number"
+          variant="filled"
+          value={props.ratingFilter}
+          onChange={handleRatingChange}
+        />
+        
+        <TextField
+          sx={{ ...formControl }}
+          label="Release Year"
+          type="number"
+          variant="filled"
+          value={props.yearFilter}
+          onChange={handleYearChange}
+        />
+
         <FormControl sx={{ ...formControl }}>
           <InputLabel id="genre-label">Genre</InputLabel>
           <Select
@@ -83,6 +118,21 @@ export default function FilterMoviesCard(props) {
                 {genre.name}
               </MenuItem>
             ))}
+          </Select>
+        </FormControl>
+
+
+        <FormControl sx={{ ...formControl }}>
+          <InputLabel id="sort-label">Sort By</InputLabel>
+          <Select
+            labelId="sort-label"
+            id="sort-select"
+            value={props.sortFilter}
+            onChange={handleSortChange}
+          >
+            <MenuItem value="popularity">Popularity</MenuItem>
+            <MenuItem value="release_date">Release Date</MenuItem>
+            <MenuItem value="vote_average">Rating</MenuItem>
           </Select>
         </FormControl>
       </CardContent>
